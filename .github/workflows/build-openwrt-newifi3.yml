@@ -11,7 +11,6 @@
 name: Build OpenWrt Newifi3
 
 on:
-  repository_dispatch:
   workflow_dispatch:
     inputs:
       ssh:
