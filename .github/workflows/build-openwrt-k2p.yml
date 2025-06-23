@@ -17,7 +17,7 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
-      branch_version:
+      branchversion:
         type: choice
         description: 'immortalwrt\'s version'
         options:
@@ -30,7 +30,7 @@ on:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: ${{ github.event.inputs.branch_version }}
+  REPO_BRANCH: ${{ github.event.inputs.branchversion }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: k2p.config
   DIY_P1_SH: diy-part1.sh
