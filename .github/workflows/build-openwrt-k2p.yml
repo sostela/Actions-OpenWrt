@@ -19,7 +19,7 @@ on:
         default: 'false'
       branch_version:
         type: choice
-        description: 'immortalwrt's version'
+        description: 'immortalwrt\'s version'
         options:
         - openwrt-21.02
         - openwrt-23.05
