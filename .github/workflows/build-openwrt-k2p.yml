@@ -17,10 +17,20 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
+      branch_version:
+        type: choice
+        description: 'immortalwrt's version'
+        options:
+        - openwrt-21.02
+        - openwrt-23.05
+        - openwrt-24.10
+        - openwrt-18.06
+        - openwrt-10.06-k5.4
+        default: 'openwrt-21.02'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-21.02
+  REPO_BRANCH: ${{ github.event.inputs.branch_version }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: k2p.config
   DIY_P1_SH: diy-part1.sh
