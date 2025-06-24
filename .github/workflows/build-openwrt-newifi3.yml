@@ -17,10 +17,20 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
+      branchversion:
+        type: choice
+        description: 'immortalwrt''s version'
+        options:
+        - openwrt-21.02
+        - openwrt-23.05
+        - openwrt-24.10
+        - openwrt-18.06
+        - openwrt-10.06-k5.4
+        default: 'openwrt-21.02'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-21.02
+  REPO_BRANCH: ${{ github.event.inputs.branchversion }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: newifi3.config
   DIY_P1_SH: diy-part1.sh
@@ -34,7 +44,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout
@@ -110,7 +120,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin${{ github.event.inputs.branchversion }}${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -125,7 +135,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_firmware${{ github.event.inputs.branchversion }}${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Upload firmware to cowtransfer
