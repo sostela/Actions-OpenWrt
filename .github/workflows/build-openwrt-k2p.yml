@@ -21,12 +21,13 @@ on:
         type: choice
         description: 'immortalwrt''s version'
         options:
+        - openwrt-25.12
+        - openwrt-24.10
         - openwrt-21.02
         - openwrt-23.05
-        - openwrt-24.10
         - openwrt-18.06
-        - openwrt-10.06-k5.4
-        default: 'openwrt-21.02'
+        - openwrt-18.06-k5.4
+        default: 'openwrt-25.12'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
