@@ -21,6 +21,8 @@ on:
         type: choice
         description: 'immortalwrt''s version'
         options:
+        - openwrt-v24.10.4
+        - openwrt-v23.05.7
         - openwrt-25.12
         - openwrt-24.10
         - openwrt-23.05
