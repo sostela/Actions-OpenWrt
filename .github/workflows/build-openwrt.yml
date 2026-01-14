@@ -78,6 +78,9 @@ jobs:
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
+        echo 'src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default
+        echo 'src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main' >>feeds.conf.default
+   
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
