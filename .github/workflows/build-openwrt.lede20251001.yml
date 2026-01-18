@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build OpenWrt x86 lede251001
+name: Build OpenWrt x86 lede20251001
 
 on:
   workflow_dispatch:
@@ -21,8 +21,8 @@ on:
         type: choice
         description: 'immortalwrt''s version'
         options:
-        - 251001
-        default: '251001'
+        - 20251001
+        default: '20251001'
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
