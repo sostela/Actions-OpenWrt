@@ -2,10 +2,7 @@
 name: Build Termux for arm64-v8a
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch: # 允许手动触发
 
 jobs:
   build:
