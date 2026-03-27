@@ -1,39 +1,40 @@
-name: Build Termux Package for aarch64
-run-name: Building for aarch64 (Release)
-
+name: Build Termux App (arm64-v8a only)
 on:
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [aarch64] # 仅指定 v8a 架构，可选值：aarch64, arm, i686, x86_64
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          repository: termux/termux-app
 
-      - name: Setup build environment
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Android NDK
         run: |
-          # 克隆 Termux 包构建脚本核心
-          git clone https://github.com/termux/termux-packages
-          # 准备环境
-          ./termux-packages/scripts/setup-ubuntu.sh
+          sdkmanager "ndk;25.2.9519653"
 
-      - name: Build package
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build APK for arm64-v8a only
         run: |
-          cd termux-packages
-          # 关键：设置构建类型为 release，去掉 debug 符号和功能
-          # 关键：指定架构为 aarch64
-          ./build-package.sh -a ${{ matrix.arch }} -I -o "$GITHUB_WORKSPACE"/output ./packages/你的包名
-        env:
-          TERMUX_PKG_BUILD_TYPE: release # 设置为 release 模式
+          # 只构建 arm64-v8a 架构
+          ./gradlew assembleDebug \
+            -Pandroid.injected.build.abi=arm64-v8a
 
-      - name: Upload artifacts
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: termux-package-${{ matrix.arch }}
-          path: ${{ github.workspace }}/**/*.apk
+          name: termux-app-arm64-v8a
+          path: app/build/outputs/apk/debug/*.apk
