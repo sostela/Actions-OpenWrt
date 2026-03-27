@@ -1,0 +1,39 @@
+name: Build Termux Package for aarch64
+run-name: Building for aarch64 (Release)
+
+on:
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [aarch64] # 仅指定 v8a 架构，可选值：aarch64, arm, i686, x86_64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup build environment
+        run: |
+          # 克隆 Termux 包构建脚本核心
+          git clone https://github.com/termux/termux-packages
+          # 准备环境
+          ./termux-packages/scripts/setup-ubuntu.sh
+
+      - name: Build package
+        run: |
+          cd termux-packages
+          # 关键：设置构建类型为 release，去掉 debug 符号和功能
+          # 关键：指定架构为 aarch64
+          ./build-package.sh -a ${{ matrix.arch }} -I -o "$GITHUB_WORKSPACE"/output ./packages/你的包名
+        env:
+          TERMUX_PKG_BUILD_TYPE: release # 设置为 release 模式
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: termux-package-${{ matrix.arch }}
+          path: ${{ github.workspace }}/**/*.apk
